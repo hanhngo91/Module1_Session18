@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo_Object</title>
+    <script src="https://kit.fontawesome.com/be2be59f23.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    table {
+        border-collapse: collapse;
+        border-radius: 15px;
+        width: 700px;
+        padding: 15px;
+    }
+
+    #id {
+        min-width: 20px;
+    }
+
+    #name {
+        min-width: 300px;
+    }
+
+    #gender #age {
+        min-width: 200px;
+    }
+
+    #address {
+        min-width: 400px;
+    }
+
+    input {
+        margin: 10px;
+        font-size: 18px;
+    }
+
+    select {
+        width: 75px;
+        height: 25px;
+    }
+</style>
+
+<body>
+    <h2>STUDENT REGISTER</h2>
+    <div class="container">
+        <label for="id">ID</label> <br />
+        <input id="id" type="number" placeholder="ID" /> <br />
+        <label for="name">NAME</label> <br />
+        <input id="name" type="text" placeholder="enter your name" /> <br />
+        <label for="gender">GENDER</label>
+        <select id="gender">
+            <option value="male">male</option>
+            <option value="female">female</option>
+        </select>
+        <br />
+        <label for="age">AGE</label> <br />
+        <input id="age" type="number" placeholder="enter your age" /> <br />
+        <label for="address">ADDRESS</label> <br />
+        <input id="address" type="text" placeholder="enter your place of birth" />
+        <br />
+        <button onclick="addInfo()">ADD</button>
+        <button type="button" disabled>UPDATE</button>
+    </div>
+    <h2>YOUR REGISTER INFORMATION</h2>
+    <table id="table" border="1">
+        <!-- <tr>
+            <td>ID</td>
+            <td>NAME</td>
+            <td>GENDER</td>
+            <td>AGE</td>
+            <td>ADDRESS</td>
+            <td><button>EDIT</button></td>
+            <TD><button>REMOVE</button></TD>
+        </tr> -->
+    </table>
+
+    <script>
+        function renderListStudents() {
+            let listStudents = JSON.parse(localStorage.getItem("listStudents"));
+            let result = `
+                <tr>
+                    <td>ID</td>
+                    <td>NAME</td>
+                    <td>GENDER</td>
+                    <td>AGE</td>
+                    <td>ADDRESS</td>
+                </tr>
+            `;
+            for (i = 0; i < listStudents.length; i++) {
+                result += `
+                <tr id="dataTable">
+                    <td id="idTable">${i + 1}</td>
+                    <td id="nameTable">${listStudents[i].name}</td>
+                    <td id="genderTable">${listStudents[i].gender}</td>
+                    <td id="ageTable">${listStudents[i].age}</td>
+                    <td id="addressTable">${listStudents[i].address}</td>
+                    <td><button id="edit" onclick="editInfo(${i})">EDIT</button></td>
+                    <td><button id="save" style = "display: none" onclick="saveinfo(${i})">SAVE</button></td>
+                    <td><button id="remove" onclick="removeInfo(${i})"><i class="fa-solid fa-trash-can"></i></button></td>
+                </tr>
+                `;
+            }
+            document.getElementById("table").innerHTML = result;
+        }
+        renderListStudents();
+
+        function addInfo() {
+            let listStudents = JSON.parse(localStorage.getItem("listStudents"));
+            let valueId = document.getElementById("id").value;
+            let valueName = document.getElementById("name").value;
+            let valueGender = document.getElementById("gender").value;
+            let valueAge = document.getElementById("age").value;
+            let valueAddress = document.getElementById("address").value;
+            let studentInfo = {
+                id: valueId,
+                name: valueName,
+                gender: valueGender,
+                age: valueAge,
+                address: valueAddress,
+            };
+            if (listStudents == null) {
+                listStudents = [];
+                listStudents.push(studentInfo);
+                localStorage.setItem("listStudents", JSON.stringify(listStudents));
+            } else {
+                listStudents.push(studentInfo);
+                localStorage.setItem("listStudents", JSON.stringify(listStudents));
+            }
+            renderListStudents();
+            document.getElementById("id").value = "";
+            document.getElementById("name").value = "";
+            document.getElementById("gender").value = "";
+            document.getElementById("age").value = "";
+            document.getElementById("address").value = "";
+        }
+        function editInfo(a) {
+            let editForm = (document.getElementById("edit").style.display = "none");
+            if (editForm == "none") {
+                document.getElementById("save").style.display = "block";
+                let listStudents = JSON.parse(localStorage.getItem("listStudents"));
+                console.log(listStudents[0].age);
+                let id = document.getElementById("idTable").value;
+                let name = document.getElementById("nameTable").value;
+                let gender = document.getElementById("genderTable").value;
+                let age = document.getElementById("ageTable").value;
+                let address = document.getElementById("addressTable").value;
+
+                document.getElementById(
+                    "idTable"
+                ).innerHTML = `<input type="number" id="idTable" + value='${listStudents[a].id}'>`;
+                document.getElementById(
+                    "nameTable"
+                ).innerHTML = `<input type='text' id='nameTable' value='${listStudents[a].name}'>`;
+                document.getElementById(
+                    "genderTable"
+                ).innerHTML = `<input type='text' id='genderTable' value='${listStudents[a].gender}'>`;
+                document.getElementById(
+                    "ageTable"
+                ).innerHTML = `<input type='number' id='ageTable' value='${listStudents[a].age}'>`;
+                document.getElementById(
+                    "addressTable"
+                ).innerHTML = `<input type='text' id='addressTable' value='${listStudents[a].address}'>`;
+            }
+
+        }
+
+
+        function saveinfo(b) {
+
+            let idUser = document.getElementById("idTable").value;
+            let nameTd = document.getElementById("nameTable").value;
+            console.log(document.getElementById("nameTable").value);
+            let gender = document.getElementById("genderTable").value;
+            let age = document.getElementById("ageTable").value;
+            let address = document.getElementById("addressTable").value;
+
+            let studentInfo = {
+                id: idUser,
+                name: name,
+                gender: gender,
+                age: age,
+                address: address,
+            };
+            let listStudents = JSON.parse(localStorage.getItem("listStudents"));
+
+            document.getElementById("idTable").innerHTML = `<td id="idTd">${listStudents[b].id}</td>`;
+            document.getElementById("nameTable").innerHTML = `<td id="nameTd">${listStudents[b].name}</td>`;
+            document.getElementById("genderTable").innerHTML = `<td id="genderTable">${listStudents[b].gender}</td>`;
+            document.getElementById("ageTable").innerHTML = `<td id="ageTable">${listStudents[b].age}</td>`;
+            document.getElementById("addressTable").innerHTML = `<td id="addressTable">${listStudents[b].address}</td>`;
+
+
+            if (listStudents == null) {
+                listStudents = [];
+                listStudents.push(studentInfo);
+                localStorage.setItem("listStudents", JSON.stringify(listStudents));
+            } else {
+                listStudents.push(studentInfo);
+                localStorage.setItem("listStudents", JSON.stringify(listStudents));
+            }
+
+            localStorage.setItem("listStudents", JSON.stringify(listStudents));
+
+
+
+            document.getElementById("edit").style.display = "block";
+            document.getElementById("save").style.display = "none";
+            // renderListStudents();
+        }
+
+        function removeInfo(y) {
+            let listStudents = JSON.parse(localStorage.getItem("listStudents"));
+            listStudents.splice(y, 1);
+            localStorage.setItem("listStudents", JSON.stringify(listStudents));
+            renderListStudents();
+        }
+
+
+        // let arr = [{ id: 1 }, { id: 2 }]
+        // arr.splice(1, 1)
+        // console.log(arr);
+    </script>
+</body>
+
+</html>

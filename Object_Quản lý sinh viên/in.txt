@@ -1,0 +1,118 @@
+
+-------------------------OBJECT(ĐỐI TƯỢNG)-----------------------------------
+
+*Thuộc tính: property
+
+*Hành động: method (phương thức)
+
+VD: Đối tượng con mèo có các đặc điểm: Màu lông: Trắng; Màu mắt: Đen; Giới tính: Đực; Các hành động: Kêu, nhảy.
+Cách khai báo: 
+        let myCat = {
+            mauLong: "trang",
+            mauMat: "den",
+            gioiTinh: "duc",
+            hanhDong: keu:function keu(){
+                console.log("meo meo");
+                return "meo meo"
+            }
+        }
+
+CREATE:
+    myCat.chungLoai="mun" hoặc let mun="chungLoai; myCat[mun]="mun
+
+READ:
+    for (const key in myCat){
+        --in ra các key: mauLong, mauMat, gioiTinh, hanhDong
+    }
+    
+UPDATE:
+    C1: myCat.maulong=[mauDen]
+    C2: myCat["mauLong"]="mauDen"
+
+DELETE:
+    delete myCat.gioiTinh
+
+*Gọi thuộc tính "keu": myCat.keu() --> "meo meo"
+
+*Kiểm tra xem thuộc tính có tồn tại không:
+myCat.hasOwnProperty("age")
+
+*THAM CHIẾU:
+VD: let obj1={
+    name: "Hoa"
+}
+    let obj2=obj1;      --->Gán địa chỉ của obj1 cho obj2
+    obj1.name="Hồng";   --->Địa chỉ của obj1 đã thay đổi thành "Hồng"
+    console.log(obj2);  -->"Hồng"
+
+*CÁC CÁCH CLONE OBJECT:
+-deep clone (sâu)
+    Chuyển về dạng JSON:
+        vd: let obj1={
+                name: "Hoa",
+                myHobby:{
+                    xemPhim: "Nhà bà Nữ"
+                }
+            }   
+            let obj2=JSON.parse(JSON.stringify(obj1));
+            obj1.name="Hồng";
+            obj1.myHobby.xemPhim="Nhà bà Nam";
+            console.log(obj2);    --->
+
+-shallow clone (nông)
+
+    -C1: Toán tử spread:
+        vd: let obj1={
+                name: "Hoa",
+                myHobby:{
+                    xemPhim: "Nhà bà Nữ"
+                }
+            }   
+            let obj2={...obj1}   
+
+    -C1: object.assign() 
+        vd: 
+        const target = { a: 1, b: 2 };
+        const source = { b: 4, c: 5 };
+
+        const returnedTarget = Object.assign(target, source);
+
+        console.log(target);
+        // Expected output: Object { a: 1, b: 4, c: 5 }
+
+        console.log(returnedTarget === target);
+        // Expected output: true
+
+        (Cú pháp: Object.assign(target, ...sources))
+
+ *KHỞI TẠO ĐỐI TƯỢNG MỚI BẰNG function
+    vd: function Person(name,age){
+            this.name=name;
+            this.age=age
+        } 
+        let person1 = new Person("Huy", 24);
+        let person2 = new Person("Hoa", 25);
+        console.log(person1) ---> person1={"Huy",24}
+        console.log(person2) ---> person2={"Hoa",25}
+
+*THIS (Đại diện cho đối tượng):
+    vd: let student={
+        name: "Anh Linh",
+        age: 24,
+        greet: function sayHello(){
+            return this.name
+            },
+        farewell:function goodBye(){
+            return this.age
+            }
+        }
+        console.log(greet())     --->"Anh Linh"
+        console.log(farewell())  --->24
+
+        
+
+
+
+
+
+
